@@ -1,0 +1,112 @@
+//- extends layout
+
+//- block content
+//-   .container
+//-     .jumbotron
+//-       h1= title
+//-       p Welcome to #{title}
+head
+  title Markit On Demand Lookup API Demo
+  link(rel='stylesheet', href='../Resources/bootstrap/bootstrap-2.3.2.css')
+  link(rel='stylesheet', href='../Resources/header.css')
+  link(rel='stylesheet', href='../Resources/footer.css')
+  link(rel='stylesheet', href='resources/demo.css')
+  script(type='text/javascript').
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-29467710-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+body
+  script(type='text/javascript', src='../Resources/header.js')
+  .container.web
+    .row
+      .span12
+        .hero-unit
+          h2 Company Lookup API Demo
+          p
+            | Presented by 
+            a(href='http://modl.markit.com') MOD/Labs
+            | , the Company Lookup API is useful for determining the stock ticker or symbol a company&rsquo;s stock is traded with. For example, Google&rsquo;s symbol is 
+            a(href='http://www.google.com/finance?q=GOOGL') GOOGL
+            | . Apple&rsquo;s is 
+            a(href='http://www.google.com/finance?q=AAPL') AAPL
+            | . To use 
+            a(href='http://dev.markitondemand.com/') our APIs
+            | , a symbol is required as one of the inputs. The Company Lookup API response includes the company&rsquo;s symbol, its full name, and the exchange it&rsquo;s traded on.
+          p
+            a(href='http://dev.markitondemand.com/#companylookup') Read the Lookup API documentation
+            |  or check out 
+            a(href='http://dev.markitondemand.com/') our other v2 APIs
+            | .
+          p.view
+            a.btn.btn-primary(href='https://github.com/markitondemand/DataApis') View DataApis on GitHub
+          p
+            iframe(src='http://ghbtns.com/github-btn.html?user=markitondemand&type=follow', allowtransparency='true', frameborder='0', scrolling='0', width='177px', height='20px')
+            a.twitter-follow-button(href='https://twitter.com/markit', data-show-count='false') Follow @markit
+    .row.content
+      .span12
+        h3.page-header Demo
+        form.well.form-inline
+          label Try typing &quot;Micro&quot; or &quot;GE&quot;:
+          |  
+          input#symbolsearch.input-(type='text', placeholder='Enter company name or symbol')
+          |  
+          span.help-inline.hide
+            img(src='resources/spinner.gif', align='absmiddle')
+            |  loading...
+          span.help-inline.hide.label.label-info
+        p.terms
+          | Markit On Demand has provided these web services for limited purposes. 
+          a(href='http://dev.markitondemand.com/#termsofuse') Read the MIT License and full terms of use
+          |  before coding.
+  script(type='text/javascript', src='../Resources/footer.js')
+  script.
+    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+  script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+  script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js')
+  script(type='text/javascript', src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js')
+  script(type='text/javascript').
+    $(function() {
+    $("#symbolsearch")
+    .focus()
+    .autocomplete({
+    source: function(request,response) {
+    $.ajax({
+    beforeSend: function(){
+    $("span.help-inline").show();
+    $("span.label-info").empty().hide();
+    },
+    url: "http://dev.markitondemand.com/api/v2/Lookup/jsonp",
+    dataType: "jsonp",
+    data: {
+    input: request.term
+    },
+    success: function(data) {
+    response( $.map(data, function(item) {
+    return {
+    label: item.Name + " (" +item.Exchange+ ")",
+    value: item.Symbol
+    }
+    }));
+    $("span.help-inline").hide();
+    }
+    });
+    },
+    minLength: 0,
+    select: function( event, ui ) {
+    //console.log(ui.item);
+    $("span.label-info").html("You selected " + ui.item.label).fadeIn("fast");
+    },
+    open: function() {
+    //$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+    },
+    close: function() {
+    //$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+    }
+    })
+    ;
+    });
