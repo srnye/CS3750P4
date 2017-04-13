@@ -11,10 +11,19 @@ nav.navbar.navbar-default
     //- Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       ul.nav.navbar-nav
+        if isLoggedIn
+          li
+            a(href='/') Money Management 
+          li
+            a(href='/') My Stocks
+          li
+            a(href='/') Add Stock 
+          li
+            a(href='/') Stock Trends
         //- li  
           //- a(href='/') Home
-        li
-          a(href='/') Sample Menu Option
+        //- li
+          //- a(href='/') Sample Menu Option
       ul.nav.navbar-nav.navbar-right
         if isLoggedIn
           li
