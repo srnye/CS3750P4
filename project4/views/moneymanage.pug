@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .container
+    .jumbotron
+        h1= title
+        p Welcome to #{title}
+
+    input#slider1(type='range', min='100', max='500', step='10')
+    input#slider2(type='range', min='100', max='500', step='10')
+    input#slider3(type='range', min='100', max='500', step='10')
+    
+    h2 Chart.js — Pie Chart Demo
+    div
+      canvas#myChart
+
+    block scripts
+        script(src='../js/moneymanage.js', type='text/javascript')
