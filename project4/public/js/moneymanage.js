@@ -48,7 +48,7 @@ $(function () {
     });
     var pointsLength = chart.series[0].data.length;
     $.each(chart.series[0].points, function (i, point) {
-        $('<input type="hidden" name="slider[]">').val(point.y).appendTo('#sliders')
+        $('<input name="slider[]">').val(point.y).appendTo('#sliders')
         point.slider = $('<div></div>').appendTo('#sliders').slider({
             value: point.y,
             max: 100,
