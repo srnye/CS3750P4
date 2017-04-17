@@ -15,6 +15,13 @@ var users = require('./routes/users');
 
 var app = express();
 
+// var Highcharts = require('highcharts');
+
+// // Load module after Highcharts is loaded
+// require('highcharts/modules/exporting')(Highcharts);
+
+app.use('/scripts', express.static(__dirname + '/node_modules'));
+
 // mongoose setup
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/StockInfo');
