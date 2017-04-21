@@ -13,4 +13,8 @@ router.get('/moneymanage', function(req, res, next) {
   res.render('moneymanage', { title: 'Money Manager' });
 });
 
+router.get('/stockTrends', function(req, res, next){
+  res.render('stockTrends', {title: 'Stock Trends'});
+});
+
 module.exports = router;
