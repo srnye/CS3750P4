@@ -10,10 +10,9 @@ $(function () {
                 ]
             },
             plotBorderWidth: 5,
-            plotShadow: true
         },
         title:{
-            text: 'This is a test'
+            text: 'Your Companies Over Time'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.y}</b><br/>',
