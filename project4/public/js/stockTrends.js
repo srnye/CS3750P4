@@ -18,16 +18,9 @@ $(function () {
         tooltip: {
             pointFormat: '{series.name}: <b>{point.y}</b><br/>',
         },
-        // plotOptions:{
-             xAxis: {
-               categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-             },
-        // },
-        // plotOptions: {
-        //     series: {
-        //         color: '#FF0000'
-        //         }
-        //     },
+        xAxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
         series: [{
             color: 'red',
             name: 'Firefox',
@@ -53,55 +46,51 @@ $(function () {
             name: 'Others',
             data: [15, 10.6, 13.5, 18.4, 3.5, 7.0, 8.6, 7.9, 4.3, 19.0, 13.9, 11.0]
         }]
-        // series: [{
-        //     data: [15.9, 12.5, 114.4, 18.2, 135.0, 154.0, 110.6, 87.5, 216.4, 194.1, 95.6, 54.4],
-        // }]
-
     });
-    // var piechart = new Highcharts.Chart({
-    //     chart: {
-    //         renderTo: 'container',
-    //         plotBackgroundColor: null,
-    //         plotBorderWidth: null,
-    //         plotShadow: false,
-    //         events: {
-    //             redraw: function () {
-    //                 //update sliders   
-    //                 $.each(chart.series[0].points, function (i, point) {
-    //                     console.log(point.slider, point);
-    //                     point.slider.slider('value', point.percentage);
-    //                 });
-    //             }
-    //         }
-    //     },
-    //     title: {
-    //         text: 'Browser market shares at a specific website, 2010'
-    //     },
-    //     tooltip: {
-    //         pointFormat: '{series.name}: <b>{point.percentage}%</b>',
-    //         percentageDecimals: 1
-    //     },
-    //     plotOptions: {
-    //         pie: {
-    //             allowPointSelect: true,
-    //             cursor: 'pointer',
-    //             dataLabels: {
-    //                 enabled: false
-    //             },
-    //             showInLegend: true
-    //         }
-    //     },
-    //     series: [{
-    //         type: 'pie',
-    //         name: 'Browser share',
-    //         data: [
-    //             ['Firefox', 10.0],
-    //             ['IE', 10],
-    //             ['Chrome', 10],
-    //             ['Safari', 10],
-    //             ['Opera', 10],
-    //             ['Others', 50]
-    //         ]
-    //     }]
-    // });
+    var piechart = Highcharts.chart({
+        chart: {
+            renderTo: 'container_a',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            events: {
+                redraw: function () {
+                    //update sliders   
+                    $.each(chart.series[0].points, function (i, point) {
+                        console.log(point.slider, point);
+                        point.slider.slider('value', point.percentage);
+                    });
+                }
+            }
+        },
+        title: {
+            text: 'Browser market shares at a specific website, 2010'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+            percentageDecimals: 1
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'Browser share',
+            data: [
+                ['Firefox', 10.0],
+                ['IE', 10],
+                ['Chrome', 10],
+                ['Safari', 10],
+                ['Opera', 10],
+                ['Others', 50]
+            ]
+        }]
+    });
 });
