@@ -22,17 +22,10 @@ const UserSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    chats: [{
-        chat_timestamp: {
-            type: Date,
-            default: Date.now
-        },
-        chat_from: {
-            type: String
-        },
-        chat_body: {
-            type: String
-        }
+    stocks: [{
+        symbol: { type: String },
+        name: { type: String },
+        percentage: { type: Number }
     }]
 });
 
@@ -66,4 +59,17 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
         if (err) throw err;
         callback(null, isMatch);
     });
+
+module.exports.addStock = function(id, stock, callback)
+{
+    User.findByIdAndUpdate(
+        id,
+        {$push: {stocks: stock}},
+        {safe: true, upsert: true},
+        function(err, model) {
+            console.log(err);
+        }
+    );
+}
+
 }
