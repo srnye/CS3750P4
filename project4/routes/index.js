@@ -3,6 +3,7 @@ var router = express.Router();
 
 const passport = require('../lib/auth').passport;
 const ensureAuthenticated = require('../lib/auth').ensureAuthenticated;
+let User = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -19,10 +20,10 @@ router.get('/addStock', ensureAuthenticated, function(req, res, next) {
 
 router.post('/addStock', (req, res, next) => 
 {
-  const stock = req.body.stockInput;
+  const stock = JSON.parse(req.body.stockInput);
 
   //add tempItem to db
-  var stockItem = {symbol: stock.Symbol, name: stock.Name, percentage: 0};
+  var stockItem = {symbol: stock.value, name: stock.label, percentage: 0};
   User.addStock(req.user.id, stockItem, (err, stock) => {if(err){alert("error saving to db");}});
 
   console.log("hit");

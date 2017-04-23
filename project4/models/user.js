@@ -59,6 +59,7 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
         if (err) throw err;
         callback(null, isMatch);
     });
+}
 
 module.exports.addStock = function(id, stock, callback)
 {
@@ -70,6 +71,4 @@ module.exports.addStock = function(id, stock, callback)
             console.log(err);
         }
     );
-}
-
 }
