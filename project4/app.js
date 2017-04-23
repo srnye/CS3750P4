@@ -13,7 +13,6 @@ const MongoStore = require('connect-mongo')(session);
 var index = require('./routes/index');
 var users = require('./routes/users');
 // var stockTrends = require('./routes/stockTrends');
-var companySearch = require('./routes/companySearch');
 
 var app = express();
 
@@ -92,7 +91,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 // app.use('/stockTrends', stockTrends);
-app.use('/companySearch', companySearch);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
