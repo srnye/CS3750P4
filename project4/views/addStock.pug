@@ -11,7 +11,7 @@ block content
       .span12
         .hero-unit
           h2 Which company are you interested in?
-          p We would be happy to help you find any company currentyly listed on the Stock Exchange.
+          p To add a stock, use the search box below.
     .row.content
       .span12
         #warningMsg.alert.alert-warning(style='display: none;')
@@ -19,8 +19,8 @@ block content
         h3.page-header Look up
         form.well.form-inline(method='post', action='/addStock', id='stockForm')
           label Enter the company name or stock exchange code here:
-          |  
-          input#symbolsearch.input-(type='text', placeholder='Enter company name or symbol')
+          |
+          input#symbolsearch.input-(type='text', placeholder='Ex: DIS')
           |  
           span.help-inline.hide
           span#lblInfo.help-inline.hide.label.label-info
@@ -86,17 +86,17 @@ block content
       {
         warningMsg.style.display = 'block';
         successMsg.style.display = 'none';
-        warningMsg.innerHTML = "<strong>Please enter a stock name.</strong>";
+        warningMsg.innerHTML = "<strong>Please select a stock using the search bar.</strong>";
         return;
       }
 
       document.getElementById("stockInput").value = JSON.stringify(tempItem);
+      tempItem = null;
 
       document.getElementById("stockForm").submit();
 
       //clear stock textbox
-      document.getElementById("symbolsearch").value = "";
-      tempItem = null;
+      document.getElementById("symbolsearch").value = "";     
       warningMsg.style.display = 'none';
       document.getElementById("lblInfo").style.display = "none";
       successMsg.style.display = 'block';
