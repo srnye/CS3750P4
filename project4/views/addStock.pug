@@ -1,8 +1,7 @@
 extends layout
 
 block content
-  - var tempItem;
-  input(type='hidden' id='stockInput')
+  - var tempItem;  
 
   .container
     .jumbotron
@@ -18,13 +17,15 @@ block content
         #warningMsg.alert.alert-warning(style='display: none;')
         #successMsg.alert.alert-success(style='display: none;')
         h3.page-header Look up
-        form.well.form-inline
+        form.well.form-inline(method='post', action='/addStock', id='stockForm')
           label Enter the company name or stock exchange code here:
           |  
           input#symbolsearch.input-(type='text', placeholder='Enter company name or symbol')
           |  
           span.help-inline.hide
           span#lblInfo.help-inline.hide.label.label-info
+          input(type='hidden', id='stockInput', name='stockInput')
+        input.btn.btn-primary(type='submit', name = 'submit', id = 'submitBtn', style='display: none;')
         div(align='center')
           button#addStockBtn.btn.btn-success(type='button', name='addStockBtn', onclick='addStock()') Add Stock
   //- script(type='text/javascript').
@@ -89,9 +90,9 @@ block content
         return;
       }
 
-      document.getElementById("stockInput").value = tempItem;
+      document.getElementById("stockInput").value = JSON.stringify(tempItem);
 
-      $.post("/addStock");
+      document.getElementById("stockForm").submit();
 
       //clear stock textbox
       document.getElementById("symbolsearch").value = "";
