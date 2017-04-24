@@ -63,12 +63,40 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
 
 module.exports.addStock = function(id, stock, callback)
 {
+    User.findOne(
+    {'_id':id, 
+     'stocks': {$elemMatch: {'name':stock.name}}}, function(err, doc)
+     {
+         if(doc)
+         {
+             //found
+         }
+         else
+         {
+             //not found
+             User.findByIdAndUpdate(
+                id,
+                {$addToSet: {stocks: stock}},
+                {safe: true, upsert: true},
+                function(err, model) {
+                    console.log(err);
+                }
+            );
+         }
+     });   
+}
+
+module.exports.removeStock = function(id, sym, callback)
+{
+
     User.findByIdAndUpdate(
         id,
-        {$push: {stocks: stock}},
+        {$pull: {stocks: {'symbol': sym}}},
         {safe: true, upsert: true},
         function(err, model) {
             console.log(err);
         }
     );
+         
+ 
 }

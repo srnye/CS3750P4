@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var yahooFinance = require('yahoo-finance');
+var markit = require('node-markitondemand');
 
 const passport = require('../lib/auth').passport;
 const ensureAuthenticated = require('../lib/auth').ensureAuthenticated;
@@ -30,11 +32,70 @@ router.post('/addStock', (req, res, next) =>
 });
 
 router.get('/myStocks', ensureAuthenticated, function(req, res, next) {
-  res.render('myStocks', { title: 'My Stocks', user: req.user });
+  var s = [];
+
+  if (req.user.stocks.length > 0)
+  {
+    for(var stock in req.user.stocks)
+    {
+      if (isNaN(parseInt(stock)))
+      {    
+      }
+      else
+      {
+        s.push(req.user.stocks[stock].symbol);
+      }
+    }
+
+    yahooFinance.snapshot({
+      symbols: s,
+      fields: ['o', 'c1', 's', 'n'],
+      }, function (err, snapshot) {
+        //... 
+        if (err)
+        {
+
+        }
+        else
+        {
+          //stockArr.push(snapshot);
+          //console.log(snapshot);
+          res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: snapshot  });
+        }
+      });
+  }
+  else
+  {
+     res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: s  });
+  }
+  
+  
+  //res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: JSON.stringify(s)  });
 });
 
 router.get('/stockView', ensureAuthenticated, function(req, res, next){
   res.render('stockView', {title: 'Stock View', user: req.user });
+});
+
+router.get('/remove/:sym/:id', (req, res, next) => {
+  const sym = req.params.sym;
+  
+  
+  // Question.updateQuestion(query, update, {}, (err, question) => {
+  //   if(err){
+  //     res.send(error);
+  //   }
+  //   res.redirect('/manage/questions');
+  // });
+
+  User.removeStock(req.user.id, sym, (err, stock) => 
+  {
+    if(err)
+    {
+      console.log("error saving to db");
+    }
+  });
+  res.redirect('/myStocks');
 });
 
 module.exports = router;
