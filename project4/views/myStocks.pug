@@ -1,0 +1,46 @@
+extends layout
+
+block content
+    .container
+        .jumbotron
+            h1= title
+
+        div(align='center')
+          a.btn.btn-success(href='/addStock') Add New Stock
+        br
+        br
+        table#stocksTable.table.table-striped
+            thead
+            tr
+                th Stock Name
+                th Current Price
+                th Up/Down
+                th Stock Ticker Code
+                th 
+            tbody
+                each stock in stocks
+                    tr
+                        if stock.name == null
+                            td= "unknown"
+                        else
+                            td= stock.name
+                        if stock.open == null
+                            td= "unknown"
+                        else                     
+                            td= stock.open
+                        if stock.change == null
+                            td= "unknown"
+                        else
+                            if stock.change > 0
+                                td
+                                    p.text-success= stock.change
+                            else
+                                td
+                                    p.text-danger= stock.change
+                        if stock.symbol == null
+                            td= "unknown"
+                        else
+                            td= stock.symbol
+                        td
+                            a.btn.btn-danger.btn-xs(href='/addStock') Remove
+                        

@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var yahooFinance = require('yahoo-finance');
+var markit = require('node-markitondemand');
 
 const passport = require('../lib/auth').passport;
 const ensureAuthenticated = require('../lib/auth').ensureAuthenticated;
@@ -30,11 +32,66 @@ router.post('/addStock', (req, res, next) =>
 });
 
 router.get('/myStocks', ensureAuthenticated, function(req, res, next) {
-  res.render('myStocks', { title: 'My Stocks', user: req.user });
+  var s = [];
+
+  for(var stock in req.user.stocks)
+  {
+    if (isNaN(parseInt(stock)))
+    {    
+    }
+    else
+    {
+      s.push(req.user.stocks[stock].symbol);
+    }
+  }
+
+  yahooFinance.snapshot({
+    symbols: s,
+    fields: ['o', 'c1', 's', 'n'],
+    }, function (err, snapshot) {
+      //... 
+      if (err)
+      {
+
+      }
+      else
+      {
+        //stockArr.push(snapshot);
+        console.log(snapshot);
+        res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: snapshot  });
+      }
+    });
+  
+  //res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: JSON.stringify(s)  });
 });
 
 router.get('/stockView', ensureAuthenticated, function(req, res, next){
   res.render('stockView', {title: 'Stock View', user: req.user });
 });
+
+function lookupStocks(user)
+{
+  var stockArr = [];
+  for(stock in user.stocks)
+  {
+    yahooFinance.snapshot({
+    symbol: 'AAPL',
+    fields: ['o', 'c1', 's', 'n'],
+    }, function (err, snapshot) {
+      //... 
+      if (err)
+      {
+
+      }
+      else
+      {
+        stockArr.push(snapshot);
+        console.log(snapshot);
+      }
+    });
+  }
+
+  return stockArr;
+}
 
 module.exports = router;
