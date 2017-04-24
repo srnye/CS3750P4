@@ -34,33 +34,41 @@ router.post('/addStock', (req, res, next) =>
 router.get('/myStocks', ensureAuthenticated, function(req, res, next) {
   var s = [];
 
-  for(var stock in req.user.stocks)
+  if (req.user.stocks.length > 0)
   {
-    if (isNaN(parseInt(stock)))
-    {    
-    }
-    else
+    for(var stock in req.user.stocks)
     {
-      s.push(req.user.stocks[stock].symbol);
-    }
-  }
-
-  yahooFinance.snapshot({
-    symbols: s,
-    fields: ['o', 'c1', 's', 'n'],
-    }, function (err, snapshot) {
-      //... 
-      if (err)
-      {
-
+      if (isNaN(parseInt(stock)))
+      {    
       }
       else
       {
-        //stockArr.push(snapshot);
-        console.log(snapshot);
-        res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: snapshot  });
+        s.push(req.user.stocks[stock].symbol);
       }
-    });
+    }
+
+    yahooFinance.snapshot({
+      symbols: s,
+      fields: ['o', 'c1', 's', 'n'],
+      }, function (err, snapshot) {
+        //... 
+        if (err)
+        {
+
+        }
+        else
+        {
+          //stockArr.push(snapshot);
+          //console.log(snapshot);
+          res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: snapshot  });
+        }
+      });
+  }
+  else
+  {
+     res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: s  });
+  }
+  
   
   //res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: JSON.stringify(s)  });
 });
@@ -69,29 +77,25 @@ router.get('/stockView', ensureAuthenticated, function(req, res, next){
   res.render('stockView', {title: 'Stock View', user: req.user });
 });
 
-function lookupStocks(user)
-{
-  var stockArr = [];
-  for(stock in user.stocks)
+router.get('/remove/:sym/:id', (req, res, next) => {
+  const sym = req.params.sym;
+  
+  
+  // Question.updateQuestion(query, update, {}, (err, question) => {
+  //   if(err){
+  //     res.send(error);
+  //   }
+  //   res.redirect('/manage/questions');
+  // });
+
+  User.removeStock(req.user.id, sym, (err, stock) => 
   {
-    yahooFinance.snapshot({
-    symbol: 'AAPL',
-    fields: ['o', 'c1', 's', 'n'],
-    }, function (err, snapshot) {
-      //... 
-      if (err)
-      {
-
-      }
-      else
-      {
-        stockArr.push(snapshot);
-        console.log(snapshot);
-      }
-    });
-  }
-
-  return stockArr;
-}
+    if(err)
+    {
+      console.log("error saving to db");
+    }
+  });
+  res.redirect('/myStocks');
+});
 
 module.exports = router;
