@@ -5,6 +5,7 @@ block content
     .jumbotron
       h1= title
 
+<<<<<<< HEAD:project4/views/companySearch.pug
   head
     title Markit On Demand Lookup API Demo
       link(rel='stylesheet', href='../Resources/bootstrap/bootstrap-2.3.2.css')
@@ -67,6 +68,90 @@ block content
       return {
       label: item.Name + " (" +item.Exchange+ ")",
       value: item.Symbol
+=======
+    .row
+      .span12
+        .hero-unit
+          h2 Which company are you interested in?
+          p To add a stock, use the search box below.
+    .row.content
+      .span12
+        #warningMsg.alert.alert-warning(style='display: none;')
+        #successMsg.alert.alert-success(style='display: none;')
+        h3.page-header Look up
+        form.well.form-inline(method='post', action='/addStock', id='stockForm')
+          label Enter the company name or stock exchange code here:
+          |
+          input#symbolsearch.input-(type='text', placeholder='Ex: DIS')
+          |  
+          span.help-inline.hide
+          span#lblInfo.help-inline.hide.label.label-info
+          input(type='hidden', id='stockInput', name='stockInput')
+        input.btn.btn-primary(type='submit', name = 'submit', id = 'submitBtn', style='display: none;')
+        div(align='center')
+          button#addStockBtn.btn.btn-success(type='button', name='addStockBtn', onclick='addStock()') Add Stock
+  //- script(type='text/javascript').
+  //-   $(!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs"));
+  script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+  script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js')
+  script(type='text/javascript', src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js')
+  script(type='text/javascript').
+    $(function() {
+    $("#symbolsearch")
+    .focus()
+    .autocomplete({
+    source: function(request,response) {
+    $.ajax({
+    beforeSend: function(){
+    $("span.help-inline").show();
+    $("span.label-info").empty().hide();
+    },
+    url: "http://dev.markitondemand.com/api/v2/Lookup/jsonp",
+    dataType: "jsonp",
+    data: {
+    input: request.term
+    },
+    success: function(data) {
+    response( $.map(data, function(item) {
+    return {
+    label: item.Name + " (" +item.Symbol+ ")",
+    value: item.Symbol
+    }
+    }));
+    $("span.help-inline").hide();
+    }
+    });
+    },
+    minLength: 0,
+    select: function( event, ui ) {
+    //console.log(ui.item);
+    $("span.label-info").html("You selected " + ui.item.label).fadeIn("fast");
+    tempItem = ui.item; 
+    },
+    open: function() {
+    //$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+    },
+    close: function() {
+    //$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+    }
+    })
+    ;
+    });
+
+  script.
+    function addStock()
+    {
+      var warningMsg = document.getElementById("warningMsg");
+      var successMsg = document.getElementById("successMsg");
+
+      //error checking
+      if (typeof tempItem == 'undefined' || tempItem == null )
+      {
+        warningMsg.style.display = 'block';
+        successMsg.style.display = 'none';
+        warningMsg.innerHTML = "<strong>Please select a stock using the search bar.</strong>";
+        return;
+>>>>>>> 37a5fd5... Merge remote-tracking branch 'origin/development' into development:project4/views/addStock.pug
       }
       }));
       $("span.help-inline").hide();
