@@ -25,7 +25,10 @@ router.post('/addStock', (req, res, next) =>
 
   //add tempItem to db
   var stockItem = {symbol: stock.value, name: stock.label, percentage: 0};
-  User.addStock(req.user.id, stockItem, (err, stock) => {if(err){alert("error saving to db");}});
+  if(stockItem.name != 'undefined (undefined)')
+  {
+     User.addStock(req.user.id, stockItem, (err, stock) => {if(err){alert("error saving to db");}});
+  }
 
   res.redirect('/addStock');
 });
