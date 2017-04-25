@@ -52,7 +52,7 @@ block content
     success: function(data) {
     response( $.map(data, function(item) {
     return {
-    label: item.Name + " (" +item.Exchange+ ")",
+    label: item.Name + " (" +item.Symbol+ ")",
     value: item.Symbol
     }
     }));
@@ -64,7 +64,7 @@ block content
     select: function( event, ui ) {
     //console.log(ui.item);
     $("span.label-info").html("You selected " + ui.item.label).fadeIn("fast");
-    tempItem = ui.item;   
+    tempItem = ui.item; 
     },
     open: function() {
     //$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
@@ -81,8 +81,9 @@ block content
     {
       var warningMsg = document.getElementById("warningMsg");
       var successMsg = document.getElementById("successMsg");
+
       //error checking
-      if (typeof tempItem == 'undefined' || tempItem == null)
+      if (typeof tempItem == 'undefined' || tempItem == null )
       {
         warningMsg.style.display = 'block';
         successMsg.style.display = 'none';

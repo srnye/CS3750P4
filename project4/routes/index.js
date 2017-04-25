@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var yahooFinance = require('yahoo-finance');
-var markit = require('node-markitondemand');
 
 const passport = require('../lib/auth').passport;
 const ensureAuthenticated = require('../lib/auth').ensureAuthenticated;
