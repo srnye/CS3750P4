@@ -2,9 +2,32 @@ $(function () {
     
     var user = document.getElementById("myUser");
     var stocks = document.getElementById("myStocks");
-
-    console.log(stocks);
     
+    stocks = JSON.parse(stocks.value);
+
+    //console.log(stocks);
+    //console.log(stocks[0]);
+    //console.log(stocks[1]);
+
+
+    var tempStock = [];
+    var reserve = 100;
+    for(var stock in stocks)
+    {
+        var s = stocks[stock];
+        var item = [];
+        item.push(s.name);
+        item.push(s.percentage);
+        tempStock.push(item);
+        reserve -= s.percentage;
+    }
+
+    var item = [];
+    item.push('Reserve');
+    item.push(reserve);
+    tempStock.push(item);
+    
+    //console.log(tempStock);
     // Build the chart
     var chart = new Highcharts.Chart({
         chart: {
@@ -41,27 +64,22 @@ $(function () {
         },
         series: [{
             type: 'pie',
-            name: 'Browser share',
-            data: [
-                ['Firefox', 10.0],
-                ['IE', 10],
-                ['Chrome', 10],
-                ['Safari', 10],
-                ['Opera', 10],
-                ['Others', 50]
-            ]
+            name: 'Stock Percentage',
+            data: tempStock
         }]
     });
     var pointsLength = chart.series[0].data.length;
+    var index = 0;
     $.each(chart.series[0].points, function (i, point) {
-        $('<input name="slider[]">').val(point.y).appendTo('#sliders')
+        //$('<input name="slider[]">').val(point.y).appendTo('#sliders')
+        $('<p>'+chart.series[0].data[index].name+'</p>').appendTo('#sliders')
         point.slider = $('<div></div>').appendTo('#sliders').slider({
-            value: point.y,
-            max: 100,
+            value: point.percentage,
+            max: reserve,
             min: 0,
             slide: function (event, ui) {
-                var prevVal = point.y,
-                    step = (ui.value - point.y) / (pointsLength - 1),
+                var prevVal = point.percentage,
+                    step = (ui.value - point.percentage) / (pointsLength - 1),
                     data = [],
                     newVal;
                 
@@ -74,7 +92,7 @@ $(function () {
                     } else {
                         data.push({
                             name: p.name,
-                            y: p.y - step
+                            y: p.percentage - step
                         })
                     }
                 });
@@ -83,5 +101,14 @@ $(function () {
             }
         })
         point.slider.children('a').css('background', point.color).text('    ' + point.legendItem.textStr)
+        index++;
     })
+
+    // save button
+    var saveBtn = document.getElementById("saveBtn");
+    saveBtn.onclick = function()
+    {
+        console.log(tempStock);
+    };
+    
 });
