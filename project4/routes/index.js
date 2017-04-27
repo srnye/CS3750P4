@@ -50,6 +50,17 @@ router.post('/addStock', (req, res, next) =>
   res.redirect('/addStock');
 });
 
+router.post('/moneyManagement', (req, res, next) => 
+{
+  const stocks = req.user.stocks;
+  User.updateStocks(req.user.id, stock, (err, stocks) => {if(err){alert("error saving to db");}});
+
+  //User.addStock(req.user.id, stockItem, (err, stock) => {if(err){alert("error saving to db");}});
+  
+
+  res.redirect('/moneyManagement');
+});
+
 router.get('/myStocks', ensureAuthenticated, function(req, res, next) {
   var s = [];
 

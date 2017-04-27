@@ -74,12 +74,12 @@ $(function () {
         //$('<input name="slider[]">').val(point.y).appendTo('#sliders')
         $('<p>'+chart.series[0].data[index].name+'</p>').appendTo('#sliders')
         point.slider = $('<div></div>').appendTo('#sliders').slider({
-            value: point.percentage,
-            max: reserve,
+            value: point.y,
+            max: 100,
             min: 0,
             slide: function (event, ui) {
-                var prevVal = point.percentage,
-                    step = (ui.value - point.percentage) / (pointsLength - 1),
+                var prevVal = point.y,
+                    step = (ui.value - point.y) / (pointsLength - 1),
                     data = [],
                     newVal;
                 
@@ -92,7 +92,7 @@ $(function () {
                     } else {
                         data.push({
                             name: p.name,
-                            y: p.percentage - step
+                            y: p.y
                         })
                     }
                 });
@@ -108,7 +108,14 @@ $(function () {
     var saveBtn = document.getElementById("saveBtn");
     saveBtn.onclick = function()
     {
-        console.log(tempStock);
+        for(var stock in stocks)
+        {
+            //console.log('Before: ' + stocks[stock].name +  ': ' + stocks[stock].percentage);
+            stocks[stock].percentage = chart.series[0].data[stock].percentage;
+            //console.log('After: ' + stocks[stock].name +  ': ' + stocks[stock].percentage);
+
+        }
+        document.getElementById("stockForm").submit();
     };
     
 });

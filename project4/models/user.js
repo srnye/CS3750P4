@@ -86,6 +86,31 @@ module.exports.addStock = function(id, stock, callback)
      });   
 }
 
+module.exports.updateStocks = function(id, stocks, callback)
+{
+    User.findOne(
+    {'_id':id, function(err, doc)
+     {
+         if(doc)
+         {
+             //found
+             User.findByIdAndUpdate(
+                id,
+                {$set: {stocks: stocks}},
+                {safe: true, upsert: true},
+                function(err, model) {
+                    console.log(err);
+                }
+            );
+         }
+         else
+         {
+             //not found
+         }
+     }
+    });   
+}
+
 module.exports.removeStock = function(id, sym, callback)
 {
 
