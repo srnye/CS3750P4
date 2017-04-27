@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  input#myUser(type='hidden', value=user)
+  input#myStocks(type='hidden', value=stocks)
+  .container
+    .jumbotron
+        h1= title
+        p Welcome to #{title}
+
+    #container
+    #sliders
+
+    div(align='center')
+        form.well.form-inline(method='post', action='/moneyManagement', id='stockForm')
+            input(type='hidden', id='newStocks', name='newStocks')
+        button#saveBtn.btn.btn-success(type='button', name='saveBtn') Save
+
+    block scripts
+        link(rel='stylesheet', href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css')
+        //script(src='https://code.jquery.com/jquery-1.12.4.js')
+        //script(src='https://code.jquery.com/ui/1.12.1/jquery-ui.js')
+        script(src='//code.highcharts.com/highcharts.js')
+        script(src='../js/moneymanage.js', type='text/javascript')
+        script(src='../css/moneymanage.css', type='text/css')
+        

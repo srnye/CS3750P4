@@ -12,8 +12,16 @@ const MongoStore = require('connect-mongo')(session);
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+// var stockTrends = require('./routes/stockTrends');
 
 var app = express();
+
+// var Highcharts = require('highcharts');
+
+// // Load module after Highcharts is loaded
+// require('highcharts/modules/exporting')(Highcharts);
+
+app.use('/scripts', express.static(__dirname + '/node_modules'));
 
 // mongoose setup
 mongoose.Promise = global.Promise;
@@ -82,6 +90,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+// app.use('/stockTrends', stockTrends);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

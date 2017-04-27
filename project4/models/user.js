@@ -22,17 +22,10 @@ const UserSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    chats: [{
-        chat_timestamp: {
-            type: Date,
-            default: Date.now
-        },
-        chat_from: {
-            type: String
-        },
-        chat_body: {
-            type: String
-        }
+    stocks: [{
+        symbol: { type: String },
+        name: { type: String },
+        percentage: { type: Number }
     }]
 });
 
@@ -66,4 +59,56 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
         if (err) throw err;
         callback(null, isMatch);
     });
+}
+
+module.exports.addStock = function(id, stock, callback)
+{
+    User.findOne(
+    {'_id':id, 
+     'stocks': {$elemMatch: {'name':stock.name}}}, function(err, doc)
+     {
+         if(doc)
+         {
+             //found
+         }
+         else
+         {
+             //not found
+             User.findByIdAndUpdate(
+                id,
+                {$addToSet: {stocks: stock}},
+                {safe: true, upsert: true},
+                function(err, model) {
+                    console.log(err);
+                }
+            );
+         }
+     });   
+}
+
+module.exports.updateStocks = function(id, s, callback)
+{   
+    User.findByIdAndUpdate(
+    id,
+    {$set: {stocks: s}},
+    {safe: true, upsert: true},
+    function(err, model) {
+        console.log(err);
+    }
+    );       
+}
+
+module.exports.removeStock = function(id, sym, callback)
+{
+
+    User.findByIdAndUpdate(
+        id,
+        {$pull: {stocks: {'symbol': sym}}},
+        {safe: true, upsert: true},
+        function(err, model) {
+            console.log(err);
+        }
+    );
+         
+ 
 }
