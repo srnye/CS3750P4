@@ -13,6 +13,7 @@ block content
 
     div(align='center')
         form.well.form-inline(method='post', action='/moneyManagement', id='stockForm')
+            input(type='hidden', id='newStocks', name='newStocks')
         button#saveBtn.btn.btn-success(type='button', name='saveBtn') Save
 
     block scripts

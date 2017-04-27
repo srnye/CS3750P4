@@ -2,6 +2,7 @@ $(function () {
     
     var user = document.getElementById("myUser");
     var stocks = document.getElementById("myStocks");
+    var newStocks = document.getElementById("newStocks");
     
     stocks = JSON.parse(stocks.value);
 
@@ -46,7 +47,7 @@ $(function () {
             }
         },
         title: {
-            text: 'Browser market shares at a specific website, 2010'
+            text: 'Your Stock Percentages'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage}%</b>',
@@ -106,15 +107,18 @@ $(function () {
 
     // save button
     var saveBtn = document.getElementById("saveBtn");
+    var tempNewStocks = [];
     saveBtn.onclick = function()
     {
         for(var stock in stocks)
         {
+            var item = {symbol: stocks[stock].symbol, name: stocks[stock].name, percentage: chart.series[0].data[stock].percentage};
             //console.log('Before: ' + stocks[stock].name +  ': ' + stocks[stock].percentage);
-            stocks[stock].percentage = chart.series[0].data[stock].percentage;
+            tempNewStocks.push(item);
             //console.log('After: ' + stocks[stock].name +  ': ' + stocks[stock].percentage);
 
         }
+        newStocks.value = JSON.stringify(tempNewStocks);
         document.getElementById("stockForm").submit();
     };
     

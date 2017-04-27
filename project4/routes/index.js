@@ -32,6 +32,25 @@ router.get('/moneyManagement', ensureAuthenticated, function(req, res, next) {
   
 });
 
+router.post('/moneyManagement', (req, res, next) => 
+{
+  const newStocks = JSON.parse(req.body.newStocks);
+
+  User.updateStocks(req.user.id, newStocks, (err, stocks) => 
+  {
+    if(err)
+    {
+      alert("error saving to db");
+    }
+    else
+    {      
+    }
+  });
+  res.redirect('/moneyManagement');
+
+  //User.addStock(req.user.id, stockItem, (err, stock) => {if(err){alert("error saving to db");}});  
+});
+
 router.get('/addStock', ensureAuthenticated, function(req, res, next) {
   res.render('addStock', { title: 'Add Stock', user: req.user });
 });
@@ -48,17 +67,6 @@ router.post('/addStock', (req, res, next) =>
   }
 
   res.redirect('/addStock');
-});
-
-router.post('/moneyManagement', (req, res, next) => 
-{
-  const stocks = req.user.stocks;
-  User.updateStocks(req.user.id, stock, (err, stocks) => {if(err){alert("error saving to db");}});
-
-  //User.addStock(req.user.id, stockItem, (err, stock) => {if(err){alert("error saving to db");}});
-  
-
-  res.redirect('/moneyManagement');
 });
 
 router.get('/myStocks', ensureAuthenticated, function(req, res, next) {
