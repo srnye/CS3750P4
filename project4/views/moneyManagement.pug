@@ -1,6 +1,8 @@
 extends layout
 
 block content
+  input#myUser(type='hidden', value=user)
+  input#myStocks(type='hidden', value=stocks)
   .container
     .jumbotron
         h1= title

@@ -12,7 +12,24 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/moneyManagement', ensureAuthenticated, function(req, res, next) {
-  res.render('moneyManagement', { title: 'Money Manager', user: req.user });
+  var s = [];
+
+  if (req.user.stocks.length > 0)
+  {
+    for(var stock in req.user.stocks)
+    {
+      if (isNaN(parseInt(stock)))
+      {    
+      }
+      else
+      {
+        s.push(req.user.stocks[stock]);
+      }
+    }
+  }
+
+  res.render('moneyManagement', { title: 'Money Management', user: req.user, stocks: s  });
+  
 });
 
 router.get('/addStock', ensureAuthenticated, function(req, res, next) {

@@ -1,4 +1,10 @@
 $(function () {
+    
+    var user = document.getElementById("myUser");
+    var stocks = document.getElementById("myStocks");
+
+    console.log(stocks);
+    
     // Build the chart
     var chart = new Highcharts.Chart({
         chart: {
