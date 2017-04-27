@@ -89,15 +89,15 @@ router.get('/stockView', ensureAuthenticated, function(req, res, next){
       }
       else
       {
-        s.push(req.user.stocks[stock].symbol);
+        t.push(req.user.stocks[stock].symbol);
       }
     }
 
   //pull historic data from yahoo-finance
   yahooFinance.historical({
-    symbols: ['AAPL','YHOO'],
-    from: '2012-01-01',
-    to: '2012-02-28',
+    symbols: t,
+    from: '2017-01-01',
+    to: '2017-01-07',
     period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only) 
   }, function (err, quotes) {
 
