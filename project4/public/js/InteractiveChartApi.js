@@ -34,7 +34,7 @@ Markit.InteractiveChartApi.prototype.PlotChart = function(){
             //Catch errors
             if (!json || json.Message){
                 console.error("Error: ", json.Message);
-                alert("error in ajax command");
+                //alert("error in ajax command");
                 return;
             }
             console.log(json);
@@ -50,7 +50,7 @@ Markit.InteractiveChartApi.prototype.getInputParams = function(){
     return {  
         Normalized: false,
         NumberOfDays: this.duration,
-        DataPeriod: "Hour",
+        DataPeriod: "Month",
         //DataInterval: 5,
         Elements: [
             {
@@ -70,9 +70,11 @@ Markit.InteractiveChartApi.prototype.getInputParams = function(){
 
 Markit.InteractiveChartApi.prototype._fixDate = function(dateIn) {
     var dat = new Date(dateIn);
-    var temp = Date.UTC(dat.getFullYear(), dat.getMonth(), dat.getDate(), dat.getHours(), dat.getMinutes());
-    var temp2 = Date.UTC(dat.getFullYear(), dat.getMonth(), dat.getDate());
-    alert(temp + " should be bigger than " + temp2);
+
+    //var temp = Date.UTC(dat.getFullYear(), dat.getMonth(), dat.getDate(), dat.getHours(), dat.getMinutes());
+    //var temp2 = Date.UTC(dat.getFullYear(), dat.getMonth(), dat.getDate());
+    //alert(temp + " should be bigger than " + temp2);
+
     return Date.UTC(dat.getFullYear(), dat.getMonth(), dat.getDate(), dat.getHours(), dat.getMinutes());
 };
 

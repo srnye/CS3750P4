@@ -1,4 +1,24 @@
+//var yahooFinance = require('yahoo-finance');
+
+
 $(function () {
+
+        yahooFinance.historical({
+        symbols: ['AAPL','YHOO'],
+        from: '2012-01-01',
+        to: '2012-02-28',
+        period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only) 
+    }, function (err, quotes) {
+
+        if(err){
+        // do nothing
+            alert("there was an errorrr");
+        }else{
+            alert("am I working?");
+        }
+
+    });
+
     var linechart = Highcharts.chart({
         chart: {
             renderTo: 'container',

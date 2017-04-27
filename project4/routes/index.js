@@ -76,7 +76,39 @@ router.get('/myStocks', ensureAuthenticated, function(req, res, next) {
 });
 
 router.get('/stockView', ensureAuthenticated, function(req, res, next){
-  res.render('stockView', {title: 'Stock View', user: req.user });
+
+  var s = req.user.stocks;
+  var t = [];
+  var test = "please see me";
+
+  // get array of stock symbols
+  for(var stock in s)
+    {
+      if (isNaN(parseInt(stock)))
+      {    
+      }
+      else
+      {
+        s.push(req.user.stocks[stock].symbol);
+      }
+    }
+
+  //pull historic data from yahoo-finance
+  yahooFinance.historical({
+    symbols: ['AAPL','YHOO'],
+    from: '2012-01-01',
+    to: '2012-02-28',
+    period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only) 
+  }, function (err, quotes) {
+
+    if(err){
+      // do nothing
+    }else{
+      res.render('stockView', {title: 'Stock View', user: req.user, stocks: quotes, mystocks: s, tickers: t });
+    }
+
+  });
+
 });
 
 router.get('/remove/:sym/:id', (req, res, next) => {
