@@ -2,10 +2,18 @@ extends layout
 
 block content
   .container
-    .jumbotron
-      h1= title
-      p Welcome to #{title}
+    
+    h1= title
+    //- p Welcome to #{title}
+
+    //h1 #{timetime}
       
+    //- form.pull-right(method='post', action='/stockView', id='timeForm')
+    //-   button#addStockBtn.btn.btn-primary(type='button', name='yearbtn', onclick="submitForm('year')") Year
+    //-   button#addStockBtn.btn.btn-primary(type='button', name='monthbtn', onclick="submitForm('month')") Month
+    //-   button#addStockBtn.btn.btn-primary(type='button', name='weekbtn', onclick="submitForm('week')") Week
+    //-   input(type='hidden', id='timeInput', name='time')
+
     #container
 
     input#stocks(type='hidden', value=stocks)
@@ -13,34 +21,21 @@ block content
 
     // pie chart
     //#container_a
-    
-    //h1 #{stocks['YHOO'][0].close}
 
-    h1 Stocks you are following
-    table.table.table-striped
-        each s in mystocks
-          tr
-            td #{s.name}
-            td #{s.symbol}
-
-    h1 Stock closing values for DIS
-    //h1 #{mystocks[0].name}
-    table.table.table-striped
-        each stock in stocks['AAPL']
-          tr
-            td #{stock.date}
-            td #{stock.close}
-
-    //- h1 Stock closing values for Yahoo
+    //- h1 Stocks you are following
     //- table.table.table-striped
-    //-     each stock in stocks['YHOO']
+    //-     each s in mystocks
+    //-       tr
+    //-         td #{s.name}
+    //-         td #{s.symbol}
+
+    //- h1 Stock closing values for DIS
+    //- //h1 #{mystocks[0].name}
+    //- table.table.table-striped
+    //-     each stock in stocks['AAPL']
     //-       tr
     //-         td #{stock.date}
     //-         td #{stock.close}
-
-    //- // hidden div so javascript can get stock data that was passed from router
-    //- div#tickers.hidden #{stocks['YHOO'][0].close}
-
 
     //this will load highcharts
     script(type='text/javascript').
@@ -204,12 +199,9 @@ block content
         script(src='http://code.highcharts.com/modules/exporting.js')
         script(src='../js/stockTrends.js', type='text/javascript')
         script(src='../css/stockTrends.css', type='text/css')
+        script(type='text/css')
 
-
-
-//- doctype html
-//- html
-//- head
+    
 //-   title Markit On Demand Stock Quote API Demo
 //-   //- script(type='text/javascript').
 //-   //-   var _gaq = _gaq || [];

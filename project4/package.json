@@ -19,6 +19,7 @@
     "express-validator": "*",
     "highcharts": "^5.0.10",
     "jquery": "*",
+    "moment": "^2.18.1",
     "mongoose": "^4.8.1",
     "morgan": "~1.7.0",
     "passport": "*",
