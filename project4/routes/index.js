@@ -139,6 +139,7 @@ router.get('/stockView', ensureAuthenticated, function(req, res, next){
       }
     }
 
+    // does the user have stocks?
   if(req.user.stocks.length > 0){
     
 
