@@ -12,7 +12,43 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/moneyManagement', ensureAuthenticated, function(req, res, next) {
-  res.render('moneyManagement', { title: 'Money Manager', user: req.user });
+  var s = [];
+
+  if (req.user.stocks.length > 0)
+  {
+    for(var stock in req.user.stocks)
+    {
+      if (isNaN(parseInt(stock)))
+      {    
+      }
+      else
+      {
+        s.push(req.user.stocks[stock]);
+      }
+    }
+  }
+
+  res.render('moneyManagement', { title: 'Money Management', user: req.user, stocks: s  });
+  
+});
+
+router.post('/moneyManagement', (req, res, next) => 
+{
+  const newStocks = JSON.parse(req.body.newStocks);
+
+  User.updateStocks(req.user.id, newStocks, (err, stocks) => 
+  {
+    if(err)
+    {
+      alert("error saving to db");
+    }
+    else
+    {      
+    }
+  });
+  res.redirect('/moneyManagement');
+
+  //User.addStock(req.user.id, stockItem, (err, stock) => {if(err){alert("error saving to db");}});  
 });
 
 router.get('/addStock', ensureAuthenticated, function(req, res, next) {
