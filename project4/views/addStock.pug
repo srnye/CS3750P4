@@ -28,8 +28,6 @@ block content
         input.btn.btn-primary(type='submit', name = 'submit', id = 'submitBtn', style='display: none;')
         div(align='center')
           button#addStockBtn.btn.btn-success(type='button', name='addStockBtn', onclick='addStock()') Add Stock
-  //- script(type='text/javascript').
-  //-   $(!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs"));
   script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
   script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js')
   script(type='text/javascript', src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js')
@@ -67,10 +65,8 @@ block content
     tempItem = ui.item; 
     },
     open: function() {
-    //$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
     },
     close: function() {
-    //$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
     }
     })
     ;

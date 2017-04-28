@@ -110,7 +110,6 @@ Markit.InteractiveChartApi.prototype._getVolume = function(json) {
 };
 
 Markit.InteractiveChartApi.prototype.render = function(data) {
-    //console.log(data)
     // split the data set into ohlc and volume
     var ohlc = this._getOHLC(data),
         volume = this._getVolume(data);
@@ -159,22 +158,11 @@ Markit.InteractiveChartApi.prototype.render = function(data) {
         }],
         
         series: [{
-
-            //type: 'candlestick',
             name: this.symbol,
             data: ohlc,
             dataGrouping: {
                 units: groupingUnits
             }
-        // this includes volume which is not required for the project
-        // }, {
-        //     type: 'column',
-        //     name: 'Volume',
-        //     data: volume,
-        //     yAxis: 1,
-        //     dataGrouping: {
-        //         units: groupingUnits
-        //     }
         }],
         credits: {
             enabled:false

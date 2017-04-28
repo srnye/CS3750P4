@@ -6,11 +6,6 @@ $(function () {
     
     stocks = JSON.parse(stocks.value);
 
-    //console.log(stocks);
-    //console.log(stocks[0]);
-    //console.log(stocks[1]);
-
-
     var tempStock = [];
     var reserve = 100;
     for(var stock in stocks)
@@ -28,7 +23,6 @@ $(function () {
     item.push(reserve);
     tempStock.push(item);
     
-    //console.log(tempStock);
     // Build the chart
     var chart = new Highcharts.Chart({
         chart: {
@@ -113,10 +107,7 @@ $(function () {
         for(var stock in stocks)
         {
             var item = {symbol: stocks[stock].symbol, name: stocks[stock].name, percentage: chart.series[0].data[stock].percentage};
-            //console.log('Before: ' + stocks[stock].name +  ': ' + stocks[stock].percentage);
             tempNewStocks.push(item);
-            //console.log('After: ' + stocks[stock].name +  ': ' + stocks[stock].percentage);
-
         }
         newStocks.value = JSON.stringify(tempNewStocks);
         document.getElementById("stockForm").submit();

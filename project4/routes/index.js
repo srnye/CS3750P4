@@ -48,7 +48,6 @@ router.post('/moneyManagement', (req, res, next) =>
   });
   res.redirect('/moneyManagement');
 
-  //User.addStock(req.user.id, stockItem, (err, stock) => {if(err){alert("error saving to db");}});  
 });
 
 router.get('/addStock', ensureAuthenticated, function(req, res, next) {
@@ -96,8 +95,6 @@ router.get('/myStocks', ensureAuthenticated, function(req, res, next) {
         }
         else
         {
-          //stockArr.push(snapshot);
-          //console.log(snapshot);
           res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: snapshot  });
         }
       });
@@ -106,9 +103,6 @@ router.get('/myStocks', ensureAuthenticated, function(req, res, next) {
   {
      res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: s  });
   }
-  
-  
-  //res.render('myStocks', { title: 'My Stocks', user: req.user, stocks: JSON.stringify(s)  });
 });
 
 router.get('/stockView', ensureAuthenticated, function(req, res, next){
@@ -118,14 +112,6 @@ router.get('/stockView', ensureAuthenticated, function(req, res, next){
 router.get('/remove/:sym/:id', (req, res, next) => {
   const sym = req.params.sym;
   
-  
-  // Question.updateQuestion(query, update, {}, (err, question) => {
-  //   if(err){
-  //     res.send(error);
-  //   }
-  //   res.redirect('/manage/questions');
-  // });
-
   User.removeStock(req.user.id, sym, (err, stock) => 
   {
     if(err)
