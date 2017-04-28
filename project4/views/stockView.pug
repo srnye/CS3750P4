@@ -2,12 +2,194 @@ extends layout
 
 block content
   .container
-    .jumbotron
-      h1= title
-      p Welcome to #{title}
+    
+    h1= title
+    //- p Welcome to #{title}
+
+    //h1 #{timetime}
       
+    //- form.pull-right(method='post', action='/stockView', id='timeForm')
+    //-   button#addStockBtn.btn.btn-primary(type='button', name='yearbtn', onclick="submitForm('year')") Year
+    //-   button#addStockBtn.btn.btn-primary(type='button', name='monthbtn', onclick="submitForm('month')") Month
+    //-   button#addStockBtn.btn.btn-primary(type='button', name='weekbtn', onclick="submitForm('week')") Week
+    //-   input(type='hidden', id='timeInput', name='time')
+
     #container
-    #container_a
+
+    input#stocks(type='hidden', value=stocks)
+    input#tickers(type='hidden', value=tickers)
+
+    // pie chart
+    //#container_a
+
+    //- h1 Stocks you are following
+    //- table.table.table-striped
+    //-     each s in mystocks
+    //-       tr
+    //-         td #{s.name}
+    //-         td #{s.symbol}
+
+    //- h1 Stock closing values for DIS
+    //- //h1 #{mystocks[0].name}
+    //- table.table.table-striped
+    //-     each stock in stocks['AAPL']
+    //-       tr
+    //-         td #{stock.date}
+    //-         td #{stock.close}
+
+    //this will load highcharts
+    script(type='text/javascript').
+      $(function(){
+        
+        // stock data must be converted back into JSON format
+        var s = document.getElementById("stocks").value;
+        var t = document.getElementById("tickers").value;
+        var stocks = JSON.parse(s);
+        var tickers = JSON.parse(t);
+
+        //alert(s);
+
+        //- alert(tickers[0]);
+        //- alert(tickers[1]);
+
+
+        //alert(tickers);
+        //set x-axis labels
+        //- var temp = tickers[0];
+        //- alert("this should be working: " + temp);
+        //- alert(stocks[temp]);
+
+        //alert(tickers[1]);
+        //alert(stocks['GT'][0].close);
+
+        var xAxisLabels = [];
+        for (var x in stocks[tickers[0]]){
+          //these labels will be in the format '2012-01-03''
+          xAxisLabels.push((stocks[tickers[0]][x].date).substring(0, 10));
+        }
+
+        //- //display x-axis labels
+        //- for (var d in xAxisLabels){
+        //-   alert(xAxisLabels[d]);
+        //- }
+
+        //alert("the inner array will looop for his long: " + stocks[tickers[0]].length);
+        //alert("the outer loop will loop for this long: " + tickers.length);
+        //we need to create series with name of stock, and data for stock
+        var graphData = [];
+        for (var x in tickers){
+          //alert("Here is the beginning of the outer loop and outer loop count is: " + x);
+          //alert("Current Ticker: " + tickers[x]);
+          for(y = 0; y < stocks[tickers[0]].length; y++){
+            
+            //alert("here is the beginning of the inner loop and inner loop count is: " + y);
+            //alert("Y = " + y);
+            if(y == 0){
+              //alert("This is the first price for " + tickers[x] + ": " + stocks[tickers[x]][y].close);
+              graphData.push({
+                name : tickers[x],
+                //crashing here... why?
+                data : [stocks[tickers[x]][y].close]
+              });
+            }else{
+              graphData[x].data.push(stocks[tickers[x]][y].close);
+              //alert(stocks[tickers[x]][y].close + " is added to " + tickers[x]);
+            } 
+          }
+        }
+
+        //alert(graphData[1].name);
+
+
+        // testing code 
+
+        //this works
+        //alert(stocks['YHOO'][2].date);
+
+        //this works
+        //alert(t.value);
+
+
+
+         //this loads the graph graph
+         var linechart = Highcharts.chart({
+           chart: {
+               renderTo: 'container',
+               plotBackgroudColor: {
+               linearGradient: [0, 0, 500, 500],
+               stops: [
+                   [0, 'rgb(255, 255, 255)'],
+                   [1, 'rgb(200, 200, 255)']
+                   ]
+               },
+               plotBorderWidth: 5,
+           },
+           title:{
+               text: 'Your Companies Over Time'
+           },
+           tooltip: {
+               pointFormat: '{series.name}: <b>{point.y}</b><br/>',
+           },
+           xAxis: {
+               categories: xAxisLabels//['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+           },
+           plotOptions: {
+                   series: {
+                       events: {
+                           hide: function () {
+                               var text = 'The series was just hidden (#' + n + ')';
+                               if (!this.chart.lbl) {
+                                   this.chart.lbl = this.chart.renderer.label(text, 100, 70)
+                                       .attr({
+                                           padding: 10,
+                                           r: 5,
+                                           fill: Highcharts.getOptions().colors[1],
+                                           zIndex: 5
+                                       })
+                                       .css({
+                                           color: '#FFFFFF'
+                                       })
+                                       .add();
+                               } else {
+                                   this.chart.lbl.attr({
+                                       text: text
+                                   });
+                               }
+                               n = n + 1;
+                           }
+                       }
+                   }
+               },        
+           series: graphData
+          //-  [{
+          //-      // color: 'red',
+          //-      name: 'Firefox',
+          //-      data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+          //-  }, {
+          //-      // color: 'yellow',
+          //-      name: 'IE',
+          //-      data: [10, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+          //-  }, {
+          //-      // color: 'blue',
+          //-      name: 'Chrome',
+          //-      data: [5, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+          //-  }, {
+          //-      // color: 'pink',
+          //-      name: 'Safari',
+          //-      data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+          //-  }, {
+          //-      // color: 'violet',
+          //-      name: 'Opera',
+          //-      data: [7.9, 5.2, 2.7, 9.5, 1.9, 5.2, 7.0, 6.6, 4.2, 1.3, 16.6, 14.8]
+          //-  }, {
+          //-      // color: 'green',
+          //-      name: 'Others',
+          //-      data: [15, 10.6, 13.5, 18.4, 3.5, 7.0, 8.6, 7.9, 4.3, 19.0, 13.9, 11.0]
+          //-  }]
+         }); // end graph
+
+
+      }); //end script
 
     block scripts
         link(rel='stylesheet', href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css')
@@ -17,3 +199,34 @@ block content
         script(src='http://code.highcharts.com/modules/exporting.js')
         script(src='../js/stockTrends.js', type='text/javascript')
         script(src='../css/stockTrends.css', type='text/css')
+        script(type='text/css')
+
+    
+//-   title Markit On Demand Stock Quote API Demo
+//-   //- script(type='text/javascript').
+//-   //-   var _gaq = _gaq || [];
+//-   //-   _gaq.push(['_setAccount', 'UA-29467710-1']);
+//-   //-   _gaq.push(['_trackPageview']);
+//-   //-   (function() {
+//-   //-   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+//-   //-   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+//-   //-   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+//-   //-   })();
+//- body
+//-   .container.web
+//-     .row.content
+//-       .span12
+//-         h3.page-header Demo
+//-         #chartDemoContainer(style='height: 500px; min-width: 500px; margin-bottom: 30px;')
+//-   //- script.
+//-   //-   !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+//-   script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+//-   //script(type='text/javascript', src='../js/purl.js')
+//-   script(type='text/javascript', src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js')
+//-   script(type='text/javascript', src='//code.highcharts.com/stock/highstock.js')
+//-   script(type='text/javascript', src='../js/InteractiveChartApi.js')
+//-   script(type='text/javascript').
+//-     $(function(){
+      
+//-       new Markit.InteractiveChartApi('AAPL', 3650);
+//-     });

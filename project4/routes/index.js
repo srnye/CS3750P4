@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var yahooFinance = require('yahoo-finance');
+var moment = require('moment');
 
 const passport = require('../lib/auth').passport;
 const ensureAuthenticated = require('../lib/auth').ensureAuthenticated;
@@ -105,8 +106,104 @@ router.get('/myStocks', ensureAuthenticated, function(req, res, next) {
   }
 });
 
+// router.post('/stockView', function(req, res, next){
+
+//   const time = JSON.parse(req.body.timeInput);
+
+//   var s = req.user.stocks;
+//   var t = [];
+
+//   // get array of stock symbols
+//   for(var stock in s)
+//     {
+//       if (isNaN(parseInt(stock)))
+//       {    
+//       }
+//       else
+//       {
+//         t.push(req.user.stocks[stock].symbol);
+//       }
+//     }
+
+//   // moment test
+//   // format the current date
+//   var stop = moment().format('YYYY-MM-DD');
+
+//   //time math example
+//    var start = moment(stop).subtract(1, 'month').format('YYYY-MM-DD');
+
+//   //pull historic data from yahoo-finance
+//   yahooFinance.historical({
+//     symbols: t,
+//     from: start,
+//     to: stop,
+//     period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only) 
+//   }, function (err, quotes) {
+
+//     if(err){
+//       // do nothing
+//     }else{
+      
+//       res.render('stockView', {title: 'Stock View', user: req.user, stocks: quotes, mystocks: s, tickers: t, startdate: start, finishdate: stop});
+//     }
+
+//   });
+
+// });
+
 router.get('/stockView', ensureAuthenticated, function(req, res, next){
-  res.render('stockView', {title: 'Stock View', user: req.user });
+
+  var s = req.user.stocks;
+  var t = [];
+  var test = "please see me";
+
+  // get array of stock symbols
+  for(var stock in s)
+    {
+      if (isNaN(parseInt(stock)))
+      {    
+      }
+      else
+      {
+        t.push(req.user.stocks[stock].symbol);
+      }
+    }
+
+    // does the user have stocks?
+  if(req.user.stocks.length > 0){
+    
+
+      // moment test
+    // format the current date
+    var stop = moment().format('YYYY-MM-DD');
+
+    //time math example
+    var start = moment(stop).subtract(1, 'month').format('YYYY-MM-DD');
+
+    //pull historic data from yahoo-finance
+    yahooFinance.historical({
+      symbols: t,
+      from: start,
+      to: stop,
+      period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only) 
+    }, function (err, quotes) {
+
+      if(err){
+        // do nothing
+      }else{
+        
+        res.render('stockView', {title: 'Stock View', user: req.user, stocks: quotes, mystocks: s, tickers: t, startdate: start, finishdate: stop });
+      }
+
+    });
+
+
+  }else{
+    res.render('stockView', { title: 'Stock View', user: req.user});
+  }
+
+  
+
 });
 
 router.get('/remove/:sym/:id', (req, res, next) => {
