@@ -25,6 +25,7 @@
     "passport-http": "*",
     "passport-local": "*",
     "passport.socketio": "^3.7.0",
+    "path-loader": "^1.0.2",
     "pug": "~2.0.0-beta11",
     "serve-favicon": "~2.3.2",
     "socket.io": "^1.7.2",
